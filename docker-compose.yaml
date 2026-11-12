@@ -1,0 +1,33 @@
+
+services:
+  eventstore:
+    image: eventstore/eventstore:23.10.8-jammy
+    container_name: eventstore_minicurso
+    environment:
+      EVENTSTORE_CLUSTER_SIZE: 1
+      EVENTSTORE_RUN_PROJECTIONS: All
+      EVENTSTORE_START_STANDARD_PROJECTIONS: "true"
+      EVENTSTORE_HTTP_PORT: 2113
+      EVENTSTORE_EXT_TCP_PORT: 1113
+      EVENTSTORE_INSECURE: "true"
+    ports:
+      - "2113:2113"
+      - "1113:1113"
+    networks:
+      - rede-evento
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres_minicurso
+    environment:
+      POSTGRES_DB: logistica_leitura
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+    ports:
+      - "5432:5432"
+    networks:
+      - rede-evento
+
+networks:
+  rede-evento:
+    driver: bridge
